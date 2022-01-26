@@ -23,6 +23,8 @@ placeFood();
 draw();
 
 function draw() {
+    //requests that the browser call a specified function to update an animation before the next repaint
+    requestAnimationFrame(draw);
     //matchfield
     cntx.fillStyle = "black";
     cntx.fillRect(0, 0, canvas.width, canvas.height);
@@ -33,8 +35,8 @@ function draw() {
     // our food
     cntx.fillStyle = "yellow";
     addRect(food.x, food.y);
-    //requests that the browser call a specified function to update an animation before the next repaint
-    requestAnimationFrame(draw);
+
+
     // if the game is over, write on matchfeld gameover
     if (tryGameOver) {
         cntx.fillStyle = "white";
