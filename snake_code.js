@@ -23,8 +23,7 @@ placeFood();
 draw();
 
 function draw() {
-    //requests that the browser call a specified function to update an animation before the next repaint
-    requestAnimationFrame(draw);
+    
     //matchfield
     cntx.fillStyle = "black";
     cntx.fillRect(0, 0, canvas.width, canvas.height);
@@ -50,6 +49,9 @@ function draw() {
         cntx.fillText("Pause", (canvas.width / 2),
             (canvas.height / 2));
     }
+
+    //requests that the browser call a specified function to update an animation before the next repaint
+    requestAnimationFrame(draw);
 
 
 };
