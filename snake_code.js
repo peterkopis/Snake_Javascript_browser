@@ -13,24 +13,46 @@ let foodColected = false;
 let tryGameOver = false;
 let pause = false;
 let previousDireccion;
+let digestioningFood;
+
+
+
 //listener for control the game 
 document.addEventListener("keydown", keyDown);
-//speed of game
-setInterval(gameloop, 500);
 
 placeFood();
+//speed of game
+setInterval(gameloop, 300);
+
+
+//placeFood();
 
 draw();
 
+
 function draw() {
+    
+
     
     //matchfield
     cntx.fillStyle = "black";
     cntx.fillRect(0, 0, canvas.width, canvas.height);
+
+    
     // our snake
     cntx.fillStyle = "white";
     snake.forEach(part => addRect(part.x, part.y));
 
+    //when snake has found the food, ih his body show the digestioning of food!!
+    if(digestioningFood)
+    {
+        cntx.fillStyle = "red";
+        addRect(digestioningFood.x, digestioningFood.y);
+        
+        
+    };
+
+    
     // our food
     cntx.fillStyle = "yellow";
     addRect(food.x, food.y);
@@ -48,8 +70,10 @@ function draw() {
         cntx.fillStyle = "white";
         cntx.fillText("Pause", (canvas.width / 2),
             (canvas.height / 2));
-    }
-
+    };
+   
+    
+   
     //requests that the browser call a specified function to update an animation before the next repaint
     requestAnimationFrame(draw);
 
@@ -71,49 +95,68 @@ function shiftsnake() {
 };
 
 function gameloop() {
+    
+    
     // if is food colected, the snake grow
     if (foodColected) {
+        
+        
         snake = [{
                 x: snake[0].x,
                 y: snake[0].y
             },
             ...snake
         ];
+        
         foodColected = false;
     };
+   
+    
     // shift the body of snake , only if game isn´t paused or over
     if (tryGameOver == false &&
-        pause == false) {
-        shiftsnake();
-    };
+        pause == false) 
+        {
+            shiftsnake();
+        };
     // permite control the snake, only if game isn´t paused or over, in variable  previousDireccion remebrer the previous direccion, if is game paused
     if (tryGameOver == false &&
-        pause == false) {
-        if (direccion == "LEFT") {
-            snake[0].x--;
-            previousDireccion = "LEFT"
-        };
-        if (direccion == "UP") {
-            snake[0].y--;
-            previousDireccion = "UP"
-        };
-        if (direccion == "RIGHT") {
-            snake[0].x++;
-            previousDireccion = "RIGHT"
-        };
-        if (direccion == "DOWN") {
-            snake[0].y++;
-            previousDireccion = "DOWN"
-        };
+        pause == false) 
+        {
+        if (direccion == "LEFT") 
+            {
+                snake[0].x--;
+                previousDireccion = "LEFT"
+            };
+        if (direccion == "UP") 
+            {
+                snake[0].y--;
+                previousDireccion = "UP"
+            };
+        if (direccion == "RIGHT") 
+            {
+                snake[0].x++;
+                previousDireccion = "RIGHT"
+            };
+        if (direccion == "DOWN") 
+            {
+                snake[0].y++;
+                previousDireccion = "DOWN"
+            };
         // try if has the snake food colected
         if (snake[0].x == food.x &&
-            snake[0].y == food.y) {
-            foodColected = true;
-            placeFood();
+            snake[0].y == food.y) 
+            {
+                //started the digestion proces of food
+                digestioningFood = {x : snake[0].x, y : snake[0].y}
+                foodColected = true;
+            
+                placeFood();
 
-        };
+            };
     }
     gameOver();
+    Trydigestion();
+    
 
 };
 
@@ -177,3 +220,22 @@ function pausedGame() {
     };
 
 }
+function Trydigestion() {
+    
+    if(digestioningFood)
+    {
+        //try the process, if digestioning is already finish 
+        let digesting = false;
+         snake.forEach((part) =>{
+            if(part.x == digestioningFood.x &&
+            part.y == digestioningFood.y){
+                digesting= true
+            } }); 
+                if(!digesting){
+                digestioningFood = false
+                }
+            
+        
+      
+    
+}}
